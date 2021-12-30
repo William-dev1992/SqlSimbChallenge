@@ -1,0 +1,26 @@
+<div class="employeesTable">
+    <table>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-overlay hidden">
+    <div class="modal">
+        <form>
+            <label for="employeeName">Nome:</label>
+            <input type="text" name="employeeName" id="employeeName">
+            <label for="employeeEmail">Email:</label>
+            <input type="email" name="employeeEmail" id="employeeEmail">
+            <label for="employeeRecommender">Recomendador:</label>
+            <input type="number" name="employeeRecommender" id="employeeRecommender">
+
+            <button type="button" onclick="employee.add()">Enviar</button>
+        </form>
+    </div>
+</div>

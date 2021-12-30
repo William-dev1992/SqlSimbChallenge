@@ -1,0 +1,22 @@
+<div class="employeesTable">
+    <table>
+        <tbody>
+            {% for team in teams %}
+                <tr>
+                    <td>{{ team.name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-overlay hidden">
+    <div class="modal">
+        <form>
+            <label for="teamName">Nome:</label>
+            <input type="text" name="teamName" id="teamName">
+
+            <button type="button" onclick="team.add()">Enviar</button>
+        </form>
+    </div>
+</div>

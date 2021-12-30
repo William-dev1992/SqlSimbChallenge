@@ -1,0 +1,28 @@
+<div class="employeesTable">
+    <table>
+        <tbody>
+            {% for team_employee in team_employees %}
+                <tr>
+                    <td>{{ team_employee.employee_id }}</td>
+                    <td>{{ team_employee.team_id }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-overlay hidden">
+    <div class="modal">
+        <form>
+            <label for="recommender">Recomendador:</label>
+            <input type="text" name="recommender" id="recommender">
+
+            <label for="recommendedName">Candidato:</label>
+            <input type="text" name="recommendedName" id="recommendedName">
+            <label for="recommendedEmail">Email do candidato:</label>
+            <input type="email" name="recommendedEmail" id="recommendedEmail">
+
+            <button type="button" onclick="team.add()">Enviar</button>
+        </form>
+    </div>
+</div>

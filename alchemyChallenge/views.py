@@ -15,5 +15,158 @@ def home(request):
     return render(request, 'home.html', {'employees': employees})
 
 
-def delete_employee(request):
-    return 'vbla'
+# Employees related
+
+def new_employee(request):
+    name = request.GET['name']
+    email = request.GET['email']
+    recommended_by = request.GET['recommendedBy']
+
+    get_employee(recommended_by)
+
+    employee = Employee(name=name, email=email, recommendation=recommended_by)
+
+    session.add(employee)
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
+
+def delete_employee(request, identifier):
+    get_employee(identifier)
+
+    employee = session.query(Employee.employee_id).filter(Employee.employee_id == identifier).first()
+
+    session.delete(employee)
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
+# Team related
+
+
+def list_team(request):
+    teams = session.query(Team)
+
+    return render(request, 'home.html', {'teams': teams})
+
+
+def new_team(request):
+    name = request.GET['name']
+
+    team = Team(name=name)
+
+    session.add(team)
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
+
+def delete_team(request, identifier):
+    get_team(identifier)
+
+    employee_team = session.query(EmployeeTeam.team_id).filter(EmployeeTeam.team_id == identifier).all()
+
+    team = session.query(Team.team_id).filter(Team.team_id == identifier).first()
+
+    session.delete(employee_team)
+    session.delete(team)
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
+
+# Recommendation related
+
+
+def list_recommendations(request):
+    recommendations = session.query(Recommendation)
+
+    return render(request, 'home.html', {'recommendations': recommendations})
+
+
+def new_recommendation(request):
+    recommender = request.GET['recommender']
+    recommended_name = request.GET['recommendedName']
+    recommended_email = request.GET['recommendedEmail']
+
+    get_employee(recommender)
+
+    recommendation = Recommendation(recommender_id=recommender, candidate_name=recommended_name, candidate_email=recommended_email)
+
+    session.add(recommendation)
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
+
+def delete_recommendation(request, identifier):
+    recommendation = session.query(Recommendation.recommendation_id).filter(Recommendation.recommendation_id == identifier).first()
+
+    session.delete(recommendation)
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
+
+# Team_employees related
+
+
+def list_team_employees(request):
+    team_employees = session.query(EmployeeTeam)
+
+    return render(request, 'home.html', {'team_employees': team_employees})
+
+
+def new_team_employee(request):
+    employee_id = request.GET['employeeId']
+    team_id = request.GET['teamId']
+
+    get_employee(employee_id)
+    get_team(team_id)
+
+    team_employee = EmployeeTeam(employee_id=employee_id, team_id=team_id)
+
+    session.add(team_employee)
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
+
+# def delete_recommendation(request, identifier):
+#     recommendation = session.query(Recommendation.recommendation_id).filter(
+#         Recommendation.recommendation_id == identifier).first()
+#
+#     session.delete(recommendation)
+#     session.commit()
+#
+#     response = HttpResponse()
+#
+#     return response
+
+def get_employee(identifier):
+    employee = session.query(Employee.employee_id).filter(Employee.employee_id == identifier).first()
+
+    if not employee.employee_id:
+        raise Exception
+
+
+def get_team(identifier):
+    team = session.query(Team.team_id).filter(Team.team_id == identifier).first()
+
+    if not team.team_id:
+        raise Exception
