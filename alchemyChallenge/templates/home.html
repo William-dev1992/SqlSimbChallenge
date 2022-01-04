@@ -7,18 +7,20 @@
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/tables.css' %}">
+        <link rel="stylesheet" href="{% static 'css/forms.css' %}">
         <script src="{% static 'js/script.js' %}" defer></script>
         <title>Simbiose</title>
     </head>
     <body>
         <div id="root">
             {% include './navBar.html' %}
-            <body>
+            <div id="content">
                 {% include './team.html' %}
                 {% include './employee.html' %}
                 {% include './recommendation.html' %}
                 {% include './employeeTeam.html' %}
-            </body>
+            </div>
         </div>
     </body>
 </html>

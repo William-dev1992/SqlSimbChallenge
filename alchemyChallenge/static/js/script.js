@@ -9,7 +9,7 @@ const employee = {
             if (response.status === 500) {
                 alert("Funcionário recomendador inválido.");
             }
-            goTo("employees");
+            goTo("");
         });
     },
     delete() {
@@ -18,8 +18,22 @@ const employee = {
             if (response.status === 500) {
                 alert("Funcionário inexistente.");
             }
-            goTo("employees");
+            goTo("");
         });
+    },
+    countRecommendations() {
+        const url = `count_recommendations/${this.employeeId.value}`;
+        fetch(url)
+            .then(response => {
+                if (response.status === 500) {
+                    alert("Funcionário inexistente.");
+                } else {
+                    return response.json();
+                }
+            }).then(response => {
+                alert(`Total de recomendações: ${response.count}`);
+                goTo("");
+            });
     }
 }
 
@@ -27,10 +41,14 @@ const team = {
     name: document.getElementById("teamName"),
     teamId: document.getElementById("teamId"),
     add() {
-        const url = `new_team?name=${this.name.value}`;
-        fetch(url).then((response) => {
-            goTo("teams");
-        });
+        if (this.name) {
+            const url = `new_team?name=${this.name.value}`;
+            fetch(url).then((response) => {
+                goTo("teams");
+            });
+        } else {
+            alert("O nome da equipe é necessário!")
+        }
     },
     delete() {
         const url = `delete_team/${this.teamId.value}`;
@@ -44,7 +62,7 @@ const team = {
 }
 
 const recommendation = {
-    recommender: document.getElementById("recommenderId"),
+    recommender: document.getElementById("recommender"),
     recommendationId: document.getElementById("recommendationId"),
     recommendedName: document.getElementById("recommendedName"),
     recommendedEmail: document.getElementById("recommendedEmail"),
@@ -63,7 +81,7 @@ const recommendation = {
         const url = `delete_recommendation/${this.recommendationId.value}`;
         fetch(url).then((response) => {
             if (response.status === 500) {
-                alert("Time inexistente.");
+                alert("Recomendação inexistente.");
             }
             goTo("recommendations");
         });
@@ -73,26 +91,37 @@ const recommendation = {
 const employeeToTeam = {
     employeeId: document.getElementById("ETEmployeeId"),
     teamId: document.getElementById("ETTeamId"),
-    // employeeTeamId: document.getElementById("employeeTeamId"),
+    employeeTeamId: document.getElementById("employeeTeamId"),
     add() {
-        const url = `add_employee_to_team?employeeId=${this.employeeId.value}
+        const url = `new_team_employee?employeeId=${this.employeeId.value}
                     &teamId=${this.teamId.value}`;
         fetch(url).then((response) => {
             if (response.status === 500) {
                 alert("Funcionário e/ou time inválidos.");
             }
-            goTo("teams");
+            goTo("team_employees");
+        });
+    },
+    delete() {
+        const url = `delete_employee_from_team/${this.employeeTeamId.value}`;
+        fetch(url).then((response) => {
+            if (response.status === 500) {
+                alert("Vínculo inexistente.");
+            }
+            goTo("team_employees");
         });
     }
-    // remove() {
-    //     const url = `remove_employee_from_team/${this.recommendationId.value}`;
-    //     fetch(url).then((response) => {
-    //         if (response.status === 500) {
-    //             alert("Time inexistente.");
-    //         }
-    //         goTo("teams");
-    //     });
-    // }
+}
+
+const modal = {
+    openModal(htmlClass) {
+        const modal = document.querySelector(`.${htmlClass}`);
+        modal.classList.remove('hidden');
+    },
+    closeModal(htmlClass) {
+        const modal = document.querySelector(`.${htmlClass}`);
+        modal.classList.add('hidden');
+    }
 }
 
 function goTo(location) {

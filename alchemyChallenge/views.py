@@ -37,14 +37,24 @@ def new_employee(request):
 def delete_employee(request, identifier):
     get_employee(identifier)
 
-    employee = session.query(Employee.employee_id).filter(Employee.employee_id == identifier).first()
+    session.query(EmployeeTeam).filter(EmployeeTeam.employee_id == identifier).delete()
+    session.query(Employee).filter(Employee.employee_id == identifier).delete()
 
-    session.delete(employee)
     session.commit()
 
     response = HttpResponse()
 
     return response
+
+
+def count_recommendations(request, identifier):
+    get_employee(identifier)
+
+    recommendations = {
+        "count": session.query(Recommendation).filter(Recommendation.recommender_id == int(identifier)).count()
+    }
+
+    return JsonResponse(recommendations, safe=False)
 
 # Team related
 
@@ -71,12 +81,9 @@ def new_team(request):
 def delete_team(request, identifier):
     get_team(identifier)
 
-    employee_team = session.query(EmployeeTeam.team_id).filter(EmployeeTeam.team_id == identifier).all()
+    session.query(EmployeeTeam).filter(EmployeeTeam.team_id == identifier).delete()
+    session.query(Team).filter(Team.team_id == identifier).delete()
 
-    team = session.query(Team.team_id).filter(Team.team_id == identifier).first()
-
-    session.delete(employee_team)
-    session.delete(team)
     session.commit()
 
     response = HttpResponse()
@@ -111,9 +118,7 @@ def new_recommendation(request):
 
 
 def delete_recommendation(request, identifier):
-    recommendation = session.query(Recommendation.recommendation_id).filter(Recommendation.recommendation_id == identifier).first()
-
-    session.delete(recommendation)
+    session.query(Recommendation).filter(Recommendation.recommendation_id == identifier).delete()
     session.commit()
 
     response = HttpResponse()
@@ -147,16 +152,15 @@ def new_team_employee(request):
     return response
 
 
-# def delete_recommendation(request, identifier):
-#     recommendation = session.query(Recommendation.recommendation_id).filter(
-#         Recommendation.recommendation_id == identifier).first()
-#
-#     session.delete(recommendation)
-#     session.commit()
-#
-#     response = HttpResponse()
-#
-#     return response
+def delete_employee_from_team(request, identifier):
+    session.query(EmployeeTeam).filter(EmployeeTeam.employee_team_id == identifier).delete()
+
+    session.commit()
+
+    response = HttpResponse()
+
+    return response
+
 
 def get_employee(identifier):
     employee = session.query(Employee.employee_id).filter(Employee.employee_id == identifier).first()

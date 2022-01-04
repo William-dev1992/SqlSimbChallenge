@@ -1,3 +1,65 @@
-.hidden {
+* {
+    font-family: Arial, sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#content .hidden {
     display: none;
+}
+
+#header {
+    height: 100px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #FFFFFF;
+        box-shadow: -5px 5px 5px #bfbfbf;
+}
+
+#header .logo{
+    display: flex;
+
+    margin-bottom: 20px;
+}
+
+#header .logo p {
+    color: #3B454E;
+    margin-left: 5px;
+}
+
+.link {
+    text-decoration: none;
+    color: #6894b1;
+
+    margin-right: 2px;
+    border-right: 1px solid #808080;
+    padding-right: 4px;
+}
+
+.link:hover {
+    color: #808080;
+}
+
+#content div.add-button {
+    margin: 5px;
+}
+
+#content div.add-button button{
+    border: 1px solid #000000;
+    border-radius: 2px;
+    font-size: 1rem;
+
+    padding: 2px 3px;
+}
+
+.button:hover {
+    filter: brightness(50%);
+    cursor: pointer;
 }

@@ -1,22 +1,47 @@
-<div class="employeesTable">
-    <table>
-        <tbody>
+<div class="teamsTable">
+    {% if teams %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for team in teams %}
                 <tr>
+                    <td>{{ team.team_id }}</td>
                     <td>{{ team.name }}</td>
                 </tr>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
 
-<div class="modal-overlay hidden">
-    <div class="modal">
-        <form>
-            <label for="teamName">Nome:</label>
-            <input type="text" name="teamName" id="teamName">
+        <div class="add-button">
+            <button class="button" onclick="modal.openModal('teamModal')">Adicionar Time</button>
+        </div>
+        <div class="remove-form">
+            <form>
+                <label for="teamId">Id do time:</label>
+                <input type="number" name="teamId" id="teamId">
 
-            <button type="button" onclick="team.add()">Enviar</button>
-        </form>
+                <div>
+                    <button class="button" type="button" onclick="team.delete()">Deletar</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    <div class="modal-overlay teamModal hidden">
+        <div class="modal">
+            <form>
+                <label for="teamName">Nome:</label>
+                <input type="text" name="teamName" id="teamName">
+
+                <div>
+                    <button class="button" type="button" onclick="modal.closeModal('teamModal')">Cancelar</button>
+                    <button class="button" type="button" onclick="team.add()">Enviar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

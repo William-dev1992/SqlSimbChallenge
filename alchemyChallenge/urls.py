@@ -10,7 +10,9 @@ from .views import (
     new_recommendation,
     delete_recommendation,
     list_team_employees,
-    new_team_employee
+    new_team_employee,
+    delete_employee_from_team,
+    count_recommendations
 )
 
 urlpatterns = [
@@ -25,4 +27,6 @@ urlpatterns = [
     path('delete_recommendation/<str:identifier>', delete_recommendation, name='delete_recommendation'),
     path('team_employees', list_team_employees, name='list_team_employees'),
     path('new_team_employee', new_team_employee, name='new_team_employee'),
+    path('delete_employee_from_team/<str:identifier>', delete_employee_from_team, name='delete_employee_from_team'),
+    path('count_recommendations/<str:identifier>', count_recommendations, name='count_recommendations'),
 ]

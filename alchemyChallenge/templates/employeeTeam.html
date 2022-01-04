@@ -1,28 +1,52 @@
 <div class="employeesTable">
-    <table>
-        <tbody>
-            {% for team_employee in team_employees %}
-                <tr>
-                    <td>{{ team_employee.employee_id }}</td>
-                    <td>{{ team_employee.team_id }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    {% if team_employees %}
+        <table>
+            <thead>
+            <tr>
+                <th>Id do vínculo</th>
+                <th>Id do funcionário</th>
+                <th>Id do time</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for team_employee in team_employees %}
+                    <tr>
+                        <td>{{ team_employee.employee_team_id }}</td>
+                        <td>{{ team_employee.employee_id }}</td>
+                        <td>{{ team_employee.team_id }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<div class="modal-overlay hidden">
-    <div class="modal">
-        <form>
-            <label for="recommender">Recomendador:</label>
-            <input type="text" name="recommender" id="recommender">
+        <div class="add-button">
+            <button class="button" onclick="modal.openModal('employeeTeamModal')">Adicionar funcionário a equipe</button>
+        </div>
 
-            <label for="recommendedName">Candidato:</label>
-            <input type="text" name="recommendedName" id="recommendedName">
-            <label for="recommendedEmail">Email do candidato:</label>
-            <input type="email" name="recommendedEmail" id="recommendedEmail">
+        <div class="remove-form">
+            <form>
+                <label for="employeeTeamId">Id do vínculo:</label>
+                <input type="number" name="employeeTeamId" id="employeeTeamId">
 
-            <button type="button" onclick="team.add()">Enviar</button>
-        </form>
+                <div>
+                    <button class="button" type="button" onclick="employeeToTeam.delete()">Deletar</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    <div class="modal-overlay employeeTeamModal hidden">
+        <div class="modal">
+            <form>
+                <label for="ETEmployeeId">Id do funcionário:</label>
+                <input type="number" name="ETEmployeeId" id="ETEmployeeId">
+                <label for="ETTeamId">Id da equipe:</label>
+                <input type="number" name="ETTeamId" id="ETTeamId">
+
+                <div>
+                    <button class="button" type="button" onclick="modal.closeModal('employeeTeamModal')">Cancelar</button>
+                    <button class="button" type="button" onclick="employeeToTeam.add()">Enviar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

@@ -1,26 +1,60 @@
 <div class="employeesTable">
-    <table>
-        <tbody>
+    {% if employees %}
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Recomendado</th>
+            </tr>
+            </thead>
+            <tbody>
             {% for employee in employees %}
-                <tr>
-                    <td>{{ employee.name }}</td>
-                </tr>
+            <tr>
+                <td>{{ employee.employee_id }}</td>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.email }}</td>
+                {% if employee.recommendation %}
+                <td>Sim</td>
+                {% else %}
+                <td>Não</td>
+                {% endif %}
+            </tr>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
 
-<div class="modal-overlay hidden">
-    <div class="modal">
-        <form>
-            <label for="employeeName">Nome:</label>
-            <input type="text" name="employeeName" id="employeeName">
-            <label for="employeeEmail">Email:</label>
-            <input type="email" name="employeeEmail" id="employeeEmail">
-            <label for="employeeRecommender">Recomendador:</label>
-            <input type="number" name="employeeRecommender" id="employeeRecommender">
+        <div class="add-button">
+            <button class="button" onclick="modal.openModal('employeeModal')">Adicionar funcionário</button>
+        </div>
+        <div class="remove-form">
+            <form>
+                <label for="employeeId">Id do funcionário:</label>
+                <input type="number" name="employeeId" id="employeeId">
 
-            <button type="button" onclick="employee.add()">Enviar</button>
-        </form>
+                <div>
+                    <button class="button" type="button" onclick="employee.countRecommendations()">Contar recomendações</button>
+                    <button class="button" type="button" onclick="employee.delete()">Deletar</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    <div class="modal-overlay employeeModal hidden">
+        <div class="modal">
+            <form>
+                <label for="employeeName">Nome:</label>
+                <input type="text" name="employeeName" id="employeeName">
+                <label for="employeeEmail">Email:</label>
+                <input type="email" name="employeeEmail" id="employeeEmail">
+                <label for="employeeRecommender">Recomendador:</label>
+                <input type="number" name="employeeRecommender" id="employeeRecommender">
+
+                <div>
+                    <button class="button" type="button" onclick="modal.closeModal('employeeModal')">Cancelar</button>
+                    <button class="button" type="button" onclick="employee.add()">Enviar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

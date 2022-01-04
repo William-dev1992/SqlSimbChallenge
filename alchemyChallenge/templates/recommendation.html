@@ -1,28 +1,53 @@
-<div class="employeesTable">
-    <table>
-        <tbody>
-            {% for recommendation in recommendations %}
-                <tr>
-                    <td>{{ recommendation.candidate_name }}</td>
-                    <td>{{ recommendation.candidate_email }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<div class="recommendationTable">
+    {% if recommendations %}
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome do candidato</th>
+                <th>Email do candidato</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for recommendation in recommendations %}
+                    <tr>
+                        <td>{{ recommendation.recommendation_id }}</td>
+                        <td>{{ recommendation.candidate_name }}</td>
+                        <td>{{ recommendation.candidate_email }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<div class="modal-overlay hidden">
-    <div class="modal">
-        <form>
-            <label for="recommender">Recomendador:</label>
-            <input type="text" name="recommender" id="recommender">
+        <div class="add-button">
+            <button class="button" onclick="modal.openModal('recommendationModal')">Adicionar recomendação</button>
+        </div>
+        <div class="remove-form">
+            <form>
+                <label for="recommendationId">Id da recomendação:</label>
+                <input type="number" name="recommendationId" id="recommendationId">
 
-            <label for="recommendedName">Candidato:</label>
-            <input type="text" name="recommendedName" id="recommendedName">
-            <label for="recommendedEmail">Email do candidato:</label>
-            <input type="email" name="recommendedEmail" id="recommendedEmail">
+                <div>
+                    <button class="button" type="button" onclick="recommendation.delete()">Deletar</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    <div class="modal-overlay recommendationModal hidden">
+        <div class="modal">
+            <form>
+                <label for="recommender">Recomendador:</label>
+                <input type="number" name="recommender" id="recommender">
+                <label for="recommendedName">Candidato:</label>
+                <input type="text" name="recommendedName" id="recommendedName">
+                <label for="recommendedEmail">Email do candidato:</label>
+                <input type="email" name="recommendedEmail" id="recommendedEmail">
 
-            <button type="button" onclick="team.add()">Enviar</button>
-        </form>
+                <div>
+                    <button class="button" type="button" onclick="modal.closeModal('recommendationModal')">Cancelar</button>
+                    <button class="button" type="button" onclick="recommendation.add()">Enviar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
