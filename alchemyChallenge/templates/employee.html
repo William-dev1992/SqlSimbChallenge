@@ -16,7 +16,7 @@
                 <td>{{ employee.name }}</td>
                 <td>{{ employee.email }}</td>
                 {% if employee.recommendation %}
-                <td>Sim</td>
+                <td>{{ employee.recommendation }}</td>
                 {% else %}
                 <td>Não</td>
                 {% endif %}
