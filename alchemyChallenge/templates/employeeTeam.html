@@ -4,16 +4,16 @@
             <thead>
             <tr>
                 <th>Id do vínculo</th>
-                <th>Id do funcionário</th>
-                <th>Id do time</th>
+                <th>Funcionário</th>
+                <th>Time</th>
             </tr>
             </thead>
             <tbody>
                 {% for team_employee in team_employees %}
                     <tr>
                         <td>{{ team_employee.employee_team_id }}</td>
-                        <td>{{ team_employee.employee_id }}</td>
-                        <td>{{ team_employee.team_id }}</td>
+                        <td>{{ team_employee.employee.name }}</td>
+                        <td>{{ team_employee.team.name }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

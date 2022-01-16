@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from .models import Employee, Team, EmployeeTeam, Recommendation
@@ -18,9 +20,11 @@ def home(request):
 # Employees related
 
 def new_employee(request):
-    name = request.GET['name']
-    email = request.GET['email']
-    recommended_by = request.GET['recommendedBy']
+    body = json.loads(request.body)
+
+    name = body['name']
+    email = body['email']
+    recommended_by = body['recommendedBy']
 
     get_employee(recommended_by)
 
@@ -66,7 +70,9 @@ def list_team(request):
 
 
 def new_team(request):
-    name = request.GET['name']
+    body = json.loads(request.body)
+
+    name = body['name']
 
     team = Team(name=name)
 
@@ -101,9 +107,11 @@ def list_recommendations(request):
 
 
 def new_recommendation(request):
-    recommender = request.GET['recommender']
-    recommended_name = request.GET['recommendedName']
-    recommended_email = request.GET['recommendedEmail']
+    body = json.loads(request.body)
+
+    recommender = body['recommender']
+    recommended_name = body['recommendedName']
+    recommended_email = body['recommendedEmail']
 
     get_employee(recommender)
 
@@ -136,8 +144,10 @@ def list_team_employees(request):
 
 
 def new_team_employee(request):
-    employee_id = request.GET['employeeId']
-    team_id = request.GET['teamId']
+    body = json.loads(request.body)
+
+    employee_id = body['employeeId']
+    team_id = body['teamId']
 
     get_employee(employee_id)
     get_team(team_id)

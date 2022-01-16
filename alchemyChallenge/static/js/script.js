@@ -3,9 +3,25 @@ const employee = {
     email: document.getElementById("employeeEmail"),
     recommendedBy: document.getElementById("employeeRecommender"),
     employeeId: document.getElementById("employeeId"),
-    add() {
-        const url = `new_employee?name=${this.name.value}&email=${this.email.value}&recommendedBy=${this.recommendedBy.value}`;
-        fetch(url).then((response) => {
+    async add() {
+        const csrftoken = getCookie('csrftoken');
+        const url = `/new_employee`;
+        const myEmployee = {
+            name: this.name.value,
+            email: this.email.value,
+            recommendedBy: this.recommendedBy.value
+        }
+
+        const request = new Request(
+            url,
+            {
+                method: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                mode: 'same-origin',
+                body: JSON.stringify(myEmployee)
+            }
+        );
+        fetch(request).then(function (response) {
             if (response.status === 500) {
                 alert("Funcionário recomendador inválido.");
             }
@@ -31,9 +47,9 @@ const employee = {
                     return response.json();
                 }
             }).then(response => {
-                alert(`Total de recomendações: ${response.count}`);
-                goTo("");
-            });
+            alert(`Total de recomendações: ${response.count}`);
+            goTo("");
+        });
     }
 }
 
@@ -42,8 +58,22 @@ const team = {
     teamId: document.getElementById("teamId"),
     add() {
         if (this.name) {
-            const url = `new_team?name=${this.name.value}`;
-            fetch(url).then((response) => {
+            const csrftoken = getCookie('csrftoken');
+            const url = `/new_team`;
+            const myTeam = {
+                name: this.name.value,
+            }
+
+            const request = new Request(
+                url,
+                {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
+                    body: JSON.stringify(myTeam)
+                }
+            );
+            fetch(request).then((response) => {
                 goTo("teams");
             });
         } else {
@@ -67,10 +97,24 @@ const recommendation = {
     recommendedName: document.getElementById("recommendedName"),
     recommendedEmail: document.getElementById("recommendedEmail"),
     add() {
-        const url = `new_recommendation?recommender=${this.recommender.value}
-                    &recommendedName=${this.recommendedName.value}
-                    &recommendedEmail=${this.recommendedEmail.value}`;
-        fetch(url).then((response) => {
+        const csrftoken = getCookie('csrftoken');
+        const url = `/new_recommendation`;
+        const myRecommendation = {
+            recommender: this.recommender.value,
+            recommendedName: this.recommendedName.value,
+            recommendedEmail: this.recommendedEmail.value
+        }
+
+        const request = new Request(
+            url,
+            {
+                method: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                mode: 'same-origin',
+                body: JSON.stringify(myRecommendation)
+            }
+        );
+        fetch(request).then((response) => {
             if (response.status === 500) {
                 alert("Funcionário recomendador inválido.");
             }
@@ -93,9 +137,23 @@ const employeeToTeam = {
     teamId: document.getElementById("ETTeamId"),
     employeeTeamId: document.getElementById("employeeTeamId"),
     add() {
-        const url = `new_team_employee?employeeId=${this.employeeId.value}
-                    &teamId=${this.teamId.value}`;
-        fetch(url).then((response) => {
+        const csrftoken = getCookie('csrftoken');
+        const url = `/new_team_employee`;
+        const myEmployeeToTeam = {
+            employeeId: this.employeeId.value,
+            teamId: this.teamId.value,
+        }
+
+        const request = new Request(
+            url,
+            {
+                method: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                mode: 'same-origin',
+                body: JSON.stringify(myEmployeeToTeam)
+            }
+        );
+        fetch(request).then((response) => {
             if (response.status === 500) {
                 alert("Funcionário e/ou time inválidos.");
             }
@@ -126,4 +184,20 @@ const modal = {
 
 function goTo(location) {
     window.location.href = `/${location}`;
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }

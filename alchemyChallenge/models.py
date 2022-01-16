@@ -1,8 +1,9 @@
 from django.db import models
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey, and_
 from sqlalchemy.ext.declarative import declarative_base
 
 # Create your models here.
+from sqlalchemy.orm import relationship, backref
 
 Base = declarative_base()
 
@@ -36,5 +37,21 @@ class EmployeeTeam(Base):
     __tablename__ = 'employee_team'
 
     employee_team_id = Column(Integer, primary_key=True)
-    employee_id = Column(Integer)
-    team_id = Column(Integer)
+    employee_id = Column(Integer, ForeignKey(Employee.employee_id))
+    team_id = Column(Integer, ForeignKey(Team.team_id))
+
+    employee = relationship(
+        Employee,
+        foreign_keys=[employee_id],
+        primaryjoin=and_(Employee.employee_id == employee_id),
+        lazy="joined",
+        backref=backref("employee_team", lazy="noload"),
+    )
+
+    team = relationship(
+        Team,
+        foreign_keys=[team_id],
+        primaryjoin=and_(Team.team_id == team_id),
+        lazy="joined",
+        backref=backref("employee_team", lazy="noload"),
+    )
